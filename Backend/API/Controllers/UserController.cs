@@ -1,14 +1,14 @@
 using API.DTOs;
 using Models;
-using Persistence.Repositories;
+using Persistence.Interfaces;
 
 namespace API.Controllers;
 
 public class UserController : BaseController {
 
-    private UserRepository UserRepository { get; set; } 
+    private IAsyncAccess<User> UserRepository { get; set; } 
 
-    public UserController(UserRepository userRepository) {
+    public UserController(IAsyncAccess<User> userRepository) {
         UserRepository = userRepository;
     }
 
@@ -20,6 +20,6 @@ public class UserController : BaseController {
 
     [HttpGet("{userId}")]
     public async Task<IActionResult> GetUser(Guid userId) {
-        return Ok(await UserRepository.GetOneByIdAsync<User>(userId));
+        return Ok(await UserRepository.GetOneByIdAsync(userId));
     }
 }
