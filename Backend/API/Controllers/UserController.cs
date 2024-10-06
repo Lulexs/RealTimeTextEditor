@@ -19,7 +19,7 @@ public class UserController : BaseController {
     }
 
     [HttpGet("{username}")]
-    public IActionResult GetUser(string username) {
-        return Ok(UserRepository.GetOneByProperty(x => x.Username == username));
+    public async Task<IActionResult> GetUser(string username) {
+        return Ok(await UserRepository.GetOneByPropertyAsync(nameof(Models.User.Username), username));
     }
 }
