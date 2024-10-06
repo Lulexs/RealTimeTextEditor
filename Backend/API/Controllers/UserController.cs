@@ -18,8 +18,8 @@ public class UserController : BaseController {
         return BadRequest();
     }
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetUser(Guid userId) {
-        return Ok(await UserRepository.GetOneByIdAsync(userId));
+    [HttpGet("{username}")]
+    public IActionResult GetUser(string username) {
+        return Ok(UserRepository.GetOneByProperty(x => x.Username == username));
     }
 }

@@ -1,7 +1,7 @@
 ﻿namespace Models;
 
 public class User {
-    public required Guid Id { get; set; }
-    public required string Username { get; set; }
-    public required string Password { get; set; }
+    public Guid UserId { get; set; }
+    public string Username { get; set; } = null!;
+    public string Password { get; set; } = null!;
 }
