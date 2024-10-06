@@ -14,4 +14,8 @@
     <PackageReference Include="YDotNet.Server.WebSockets" Version="0.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj" />
+  </ItemGroup>
+
 </Project>

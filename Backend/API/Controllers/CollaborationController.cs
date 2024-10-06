@@ -23,7 +23,7 @@ public class CollaborationController : BaseController {
 
     private async Task SetupWSConnection(WebSocket conn, string docName) {
         var doc = getYDoc(docName);
-        doc.Conns.Add(conn, []);
+        doc.Conns.Add(conn);
 
         await RecieveMessageAsync(conn, doc);
     }
@@ -45,17 +45,18 @@ public class CollaborationController : BaseController {
                 }
                 else if (msg is SyncUpdateMessage msg2) {
                     Transaction writeTransaction = doc.WriteTransaction();
+                    Console.WriteLine();
                     writeTransaction.ApplyV1(msg2.Update);
                     writeTransaction.Commit();
 
-                    foreach (var sock in doc.Conns.Keys) {
+                    foreach (var sock in doc.Conns) {
                         if (sock == conn) continue;
                         var foreignEncoder = new WebSocketEncoder(sock); // AWFUL
                         await foreignEncoder.WriteAsync(msg2, CancellationToken.None);
                     }
                 }
                 else if (msg is AwarenessMessage msg3) {
-                    foreach (var sock in doc.Conns.Keys) {
+                    foreach (var sock in doc.Conns) {
                         if (sock == conn) continue;
                         var foreignEncoder = new WebSocketEncoder(sock);
                         await foreignEncoder.WriteAsync(msg3, CancellationToken.None);
@@ -90,10 +91,11 @@ public class CollaborationController : BaseController {
 
 public class WSSharedDoc : Doc {
     public string Name { get; set; }
-    public Dictionary<WebSocket, HashSet<uint>> Conns = [];
+    public HashSet<WebSocket> Conns = [];
 
     public WSSharedDoc(string name) : base(new YDotNet.Document.Options.DocOptions() { SkipGarbageCollection = true }) {
         Name = name;
+
     }
 
 }
