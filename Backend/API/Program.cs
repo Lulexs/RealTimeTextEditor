@@ -1,6 +1,10 @@
+using Persistence.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+
+builder.Services.AddScoped<UserRepository>();
 
 var app = builder.Build();
 
