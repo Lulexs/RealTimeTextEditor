@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Persistence\Persistence.csproj" />
+    <ProjectReference Include="..\ApplicationLogic\ApplicationLogic.csproj" />
   </ItemGroup>
 
 </Project>

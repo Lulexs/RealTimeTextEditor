@@ -1,25 +1,34 @@
-using API.DTOs;
+using ApplicationLogic;
+using ApplicationLogic.DTOs;
+using ApplicationLogic.Exceptions;
 using Models;
-using Persistence.Interfaces;
 
 namespace API.Controllers;
 
 public class UserController : BaseController {
 
-    private IAsyncAccess<User> UserRepository { get; set; } 
+    private UserLogic _userLogic; 
 
-    public UserController(IAsyncAccess<User> userRepository) {
-        UserRepository = userRepository;
+    public UserController(UserLogic userLogic) {
+        _userLogic = userLogic;
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody]UserRegisterDto userRegisterDto) {
-        await Task.Delay(1000);
-        return BadRequest();
+    public async Task<ActionResult<User>> Register([FromBody]UserRegisterDto userRegisterDto) {
+        try {
+            var user = await _userLogic.RegisterUser(userRegisterDto);
+            return Ok(user);
+        }
+        catch (AlreadyExistsException ec) {
+            return Conflict(ec.Message);
+        }
+        catch (Exception ec) {
+            return BadRequest(ec.Message);
+        }
     }
 
-    [HttpGet("{username}")]
-    public async Task<IActionResult> GetUser(string username) {
-        return Ok(await UserRepository.GetOneByPropertyAsync(nameof(Models.User.Username), username));
-    }
+    // [HttpGet("{username}")]
+    // public async Task<IActionResult> GetUser(string username) {
+    //     return Ok(await UserRepository.GetOneByPropertyAsync(nameof(Models.User.Username), username));
+    // }
 }

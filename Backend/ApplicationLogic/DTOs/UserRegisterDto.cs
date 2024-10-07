@@ -1,3 +1,3 @@
-namespace API.DTOs;
+namespace ApplicationLogic.DTOs;
 
 public record UserRegisterDto(string Username, string Password);

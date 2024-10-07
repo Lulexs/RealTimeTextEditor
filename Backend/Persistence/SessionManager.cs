@@ -19,7 +19,7 @@ internal static class SessionManager {
                 .Column(u => u.Username, cm => cm.WithName("username"))
                 .Column(u => u.Password, cm => cm.WithName("password"));
 
-            var usersByEmailMap = new Map<User>()
+            var usersByEmailMap = new Map<UserByUsername>()
                 .TableName("users_by_id")
                 .PartitionKey(u => u.UserId)
                 .ClusteringKey(u => u.Username)

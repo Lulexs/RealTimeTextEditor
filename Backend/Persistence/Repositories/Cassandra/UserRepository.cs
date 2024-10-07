@@ -1,4 +1,3 @@
-using System.Linq.Expressions;
 using Cassandra.Mapping;
 using Models;
 using Persistence.Interfaces;
@@ -23,7 +22,7 @@ public class UserRepository : IAsyncAccess<User>
         var userMap = MappingConfiguration.Global.Get<User>();
         var columnName = userMap.GetColumnDefinition(typeof(User).GetProperty(propertyName)).ColumnName;
 
-        User user = await mapper.SingleOrDefaultAsync<User>(
+        User user = await mapper.SingleOrDefaultAsync<UserByUsername>(
             $"SELECT user_id, username, password FROM users_by_{columnName} WHERE {columnName} = ?", propertyValue);
 
         return user;
@@ -33,9 +32,12 @@ public class UserRepository : IAsyncAccess<User>
         throw new NotImplementedException();
     }
 
-    public Task<User> InsertOneAsync<DtoT>(DtoT dto)
-    {
-        throw new NotImplementedException();
+    public async Task InsertOneAsync(User entity) {
+        var session = SessionManager.GetSession();
+        var mapper = new Mapper(session);
+
+        await mapper.InsertAsync(entity);
+        await mapper.InsertAsync(new UserByUsername(entity));
     }
 
     public Task<User> UpdateOneAsync<DtoT>(DtoT dto)
