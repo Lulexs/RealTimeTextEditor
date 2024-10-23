@@ -1,10 +1,5 @@
 
----
-
 ### 2. Real-Time Collaborative Rich Text Editor (CRDT)
-
-```markdown
-# Real-Time Collaborative Rich Text Editor (CRDT)
 
 ## Overview
 
