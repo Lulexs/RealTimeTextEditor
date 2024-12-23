@@ -7,14 +7,14 @@ namespace API.Controllers;
 
 public class UserController : BaseController {
 
-    private UserLogic _userLogic; 
+    private UserLogic _userLogic;
 
     public UserController(UserLogic userLogic) {
         _userLogic = userLogic;
     }
 
     [HttpPost("register")]
-    public async Task<ActionResult<User>> Register([FromBody]UserRegisterDto userRegisterDto) {
+    public async Task<ActionResult<User>> Register([FromBody] UserRegisterDto userRegisterDto) {
         try {
             var user = await _userLogic.RegisterUser(userRegisterDto);
             return Ok(user);
